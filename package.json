@@ -1,0 +1,13 @@
+{
+  "name": "giphy",
+  "main": "./lib/giphy",
+  "version": "0.0.0",
+  "description": "GIFs from giphy",
+  "repository": "https://github.com/rgbkrk/atom-giphy",
+  "license": "MIT",
+  "engines": {
+    "atom": ">0.50.0"
+  },
+  "dependencies": {
+  }
+}
