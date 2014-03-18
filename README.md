@@ -1,6 +1,6 @@
-# Giphy
+# :boom: Giphy :boom:
 
-Loads GIFs from Giphy.
+Loads :video_camera: GIFs from Giphy.
 
 Hit `cmd-shift-p` and type random.
 
@@ -14,9 +14,10 @@ There are buttons too. Click those.
 
 Yes, please.
 
-All contributions receive free animated GIFs.
+All contributions receive :free: animated GIFs.
 
 ## TODO
 
 * Put a GIF in this README. It's seriously lacking one.
 * [Search features](https://github.com/giphy/GiphyAPI#search-endpoint)
+* :put_litter_in_its_place:
