@@ -68,3 +68,5 @@ class GiphyView extends View
         chosen = shuffle(possibilities)[0]
         image_url = chosen["images"]["original"]["url"]
         @image.attr('src', image_url)
+      else
+        @image.attr('src', 'http://media3.giphy.com/media/hNfSSrfLfWwgw/giphy.gif')
