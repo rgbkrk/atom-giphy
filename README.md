@@ -19,5 +19,4 @@ All contributions receive :free: animated GIFs.
 ## TODO
 
 * Put a GIF in this README. It's seriously lacking one.
-* [Search features](https://github.com/giphy/GiphyAPI#search-endpoint)
 * :put_litter_in_its_place:
