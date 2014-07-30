@@ -2,6 +2,17 @@
 
 giphy_public_beta_key = "dc6zaTOxFJmzC"
 
+# See http://coffeescriptcookbook.com/chapters/arrays/shuffling-array-elements
+#
+shuffle = (a) ->
+  i = a.length
+  while --i > 0
+    j = ~~(Math.random() * (i + 1)) # ~~ is a common optimization for Math.floor
+    t = a[j]
+    a[j] = a[i]
+    a[i] = t
+  a
+
 module.exports =
 class GiphyView extends View
   @content: ->
@@ -50,6 +61,10 @@ class GiphyView extends View
   search: ->
     term = encodeURIComponent(@searchTerm.getEditor().getText())
 
-    $.get("http://api.giphy.com/v1/gifs/search?q=#{term}&limit=1&api_key=#{giphy_public_beta_key}").done (data) =>
-      image_url = data["data"][0]["images"]["original"]["url"]
-      @image.attr('src', image_url)
+    $.get("http://api.giphy.com/v1/gifs/search?q=#{term}&limit=50&api_key=#{giphy_public_beta_key}").done (data) =>
+      possibilities = data["data"]
+      console.log("#{possibilities.length} results!!!")
+      if possibilities.length > 0
+        chosen = shuffle(possibilities)[0]
+        image_url = chosen["images"]["original"]["url"]
+        @image.attr('src', image_url)
