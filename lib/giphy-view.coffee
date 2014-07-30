@@ -1,4 +1,17 @@
-{$, View} = require 'atom'
+{$, View, EditorView} = require 'atom'
+
+giphy_public_beta_key = "dc6zaTOxFJmzC"
+
+# See http://coffeescriptcookbook.com/chapters/arrays/shuffling-array-elements
+#
+shuffle = (a) ->
+  i = a.length
+  while --i > 0
+    j = ~~(Math.random() * (i + 1)) # ~~ is a common optimization for Math.floor
+    t = a[j]
+    a[j] = a[i]
+    a[i] = t
+  a
 
 module.exports =
 class GiphyView extends View
@@ -9,8 +22,11 @@ class GiphyView extends View
         @p class: "text-subtle inline-block", "click image to copy to clipboard"
       @img outlet: "image", class: "block giph", click: 'copy'
       @div class: "block", =>
-        @button class: 'btn inline-block', click: 'random', 'NEW GIF PLEASE'
+        @button class: 'btn btn-primary inline-block', click: 'random', 'NEW GIF PLEASE'
         @button class: 'btn inline-block', click: 'destroy', 'CLOSE ME'
+        @span class: 'inline-block', =>
+          @subview 'searchTerm', new EditorView(mini: true)
+        @button class: 'btn inline-block', click: 'search', 'SEARCH PLZ'
 
   initialize: (serializeState) ->
     atom.workspaceView.command "giphy:random", => @random()
@@ -31,8 +47,6 @@ class GiphyView extends View
     @image.attr("src", image_url)
 
   random: ->
-    giphy_public_beta_key = "dc6zaTOxFJmzC"
-
     giphy_key = giphy_public_beta_key
 
     xhr = $.get("http://api.giphy.com/v1/gifs/random?api_key=" + giphy_key);
@@ -43,3 +57,16 @@ class GiphyView extends View
       atom.workspaceView.append(this)
     else
       console.log("MOAR IMAGEZ")
+
+  search: ->
+    term = encodeURIComponent(@searchTerm.getEditor().getText())
+
+    $.get("http://api.giphy.com/v1/gifs/search?q=#{term}&limit=50&api_key=#{giphy_public_beta_key}").done (data) =>
+      possibilities = data["data"]
+      console.log("#{possibilities.length} results!!!")
+      if possibilities.length > 0
+        chosen = shuffle(possibilities)[0]
+        image_url = chosen["images"]["original"]["url"]
+        @image.attr('src', image_url)
+      else
+        @image.attr('src', 'http://media3.giphy.com/media/hNfSSrfLfWwgw/giphy.gif')
